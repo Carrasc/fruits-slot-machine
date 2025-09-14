@@ -114,7 +114,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scrollDirection: 0
-  spacing: 8
+  spacing: 12
   padding:
     m_Left: 0
     m_Right: 0

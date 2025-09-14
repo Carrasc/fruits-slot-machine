@@ -102,7 +102,7 @@ public class Roller : MonoBehaviour, IEnhancedScrollerDelegate
     /// <returns>The size of the cell (Height for vertical scrollers, Width for Horizontal scrollers)</returns>
     public float GetCellViewSize(EnhancedScroller scroller, int dataIndex)
     {
-        return 125f;
+        return 200f;
     }
 
     /// <summary>

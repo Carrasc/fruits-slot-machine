@@ -1,15 +1,18 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
-using UnityEditor.Search;
 using UnityEngine.UI;
+using TMPro;
 
 public class SlotMachineManager : MonoBehaviour
 {
     public Roller[] rollers = new Roller[5];
     public List<PaylineData> paylines;
     [SerializeField] private float rollerStartSpinDelay = 0.5f;
+    [SerializeField] private float minSpinTime = 0.5f;
+    [SerializeField] private float maxSpinTime = 1f;
     [SerializeField] private Button spinButton;
+    [SerializeField] private TextMeshProUGUI winAmountText;
 
     private int credits;
     private int currentBet;
@@ -21,7 +24,7 @@ public class SlotMachineManager : MonoBehaviour
     void Start()
     {
         currentState = GameState.Idle;
-        
+
         // Show credits here, or cool start animation, etc...
     }
 
@@ -39,6 +42,9 @@ public class SlotMachineManager : MonoBehaviour
             if (credits >= currentBet)
             {
                 credits -= currentBet;
+
+                // Remove any winning highlights from previous bet
+                ResetHighlightsAndWinnings();
                 StartCoroutine(StartSpinning());
             }
         }
@@ -52,9 +58,9 @@ public class SlotMachineManager : MonoBehaviour
         // Animation is just a cool show for the player
         List<int> stopIndexes = new List<int>();
         CellData[,] finalResult = GenerateFinalResult(out stopIndexes);
-        
+
         // Calculate the spin time, for all rollers between 2 and 4 seconds
-        float spinTime = Random.Range(2, 4);
+        float spinTime = Random.Range(minSpinTime, maxSpinTime);
 
         for (int i = 0; i < rollers.Length; i++)
         {
@@ -139,6 +145,16 @@ public class SlotMachineManager : MonoBehaviour
             if (consecutiveSymbols >= 2)
             {
                 totalWinnings += firstSymbol.symbolData.payoutAmounts[consecutiveSymbols - 2];
+
+                for (int rollerIndex = 0; rollerIndex < consecutiveSymbols; rollerIndex++)
+                {
+                    CellData winningCellData = result[rollerIndex, payline.linePositions[rollerIndex]];
+
+                    // Find the original cell from the roller and change the state
+                    var originalData = rollers[rollerIndex].RollerCellsData[winningCellData.cellIndex];
+                    originalData.IsHighlighted = true;
+                }
+
                 Debug.Log($"Win with {firstSymbol.symbolData.symbolName}! you won +{firstSymbol.symbolData.payoutAmounts[consecutiveSymbols - 2]}");
             }
         }
@@ -149,6 +165,7 @@ public class SlotMachineManager : MonoBehaviour
             credits += totalWinnings;
 
             // Show victory animation / winning amounts
+            winAmountText.text = totalWinnings.ToString();
             Debug.Log($"Total win: ! +{totalWinnings}");
         }
         else
@@ -158,7 +175,22 @@ public class SlotMachineManager : MonoBehaviour
             Debug.Log("Lost spin. No winning symbols");
         }
 
-        // Después de un tiempo, volver a Idle
+        // Back to idle after evaluation (we could make animations fancier and wait longer)
         currentState = GameState.Idle;
+    }
+
+    private void ResetHighlightsAndWinnings()
+    {
+        // Remove the highlights from each cell
+        foreach (var roller in rollers)
+        {
+            for (int i = 0; i < roller.RollerCellsData.Count; i++)
+            {
+                roller.RollerCellsData[i].IsHighlighted = false;
+            }
+        }
+
+        // Reset the winning text
+        winAmountText.text = "0";
     }
 }

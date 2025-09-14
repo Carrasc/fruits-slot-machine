@@ -98,11 +98,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rollerSymbols: []
-  cellPrefab: {fileID: 5448694757968692127, guid: 4bc0793a15464421786f327842a22a70, type: 3}
-  rollerContent: {fileID: 8756429745775212972}
+  spinSpeed: 5201
   scroller: {fileID: 4988897083097907702}
   slotCellViewPrefab: {fileID: 5259401770062993020, guid: 4bc0793a15464421786f327842a22a70, type: 3}
-  spinSpeed: 5201
 --- !u!114 &4988897083097907702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,7 +183,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.003921569}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

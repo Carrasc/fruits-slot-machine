@@ -9,6 +9,7 @@ public class ColumnCell : EnhancedScrollerCellView
     [SerializeField] private Image image;
     [SerializeField] private CanvasGroup highlightWinImage;
     [HideInInspector] public int index;
+    private CellData _currentData;
 
     /// <summary>
     /// When creating the prefab, set cell data and the corresponding sprite.
@@ -16,15 +17,33 @@ public class ColumnCell : EnhancedScrollerCellView
     /// </summary>
     public void InitializeCell(CellData cellData)
     {
-        //cellIndex = index;
-        //symbolData = cellData.symbolData;
+        if (_currentData != null)
+        {
+            _currentData.OnHighlightStateChanged -= HighlightCell;
+        }
+
+        _currentData = cellData;
+
+        // Method SetHighlight will run automatically when _currentData.IsHighlighted is changed
+        _currentData.OnHighlightStateChanged += HighlightCell;
+
+        // Update from the start the state of the cell
+        HighlightCell(_currentData.IsHighlighted);
 
         // Set the sprite at initialization
         image.sprite = cellData.symbolData.symbolSprite;
     }
 
-    public void HighlightCell()
+    public void HighlightCell(bool isHighlighted)
     {
-        highlightWinImage.alpha = 1;
+        highlightWinImage.alpha = isHighlighted ? 1 : 0;
+    }
+
+    private void OnDisable()
+    {
+        if (_currentData != null)
+        {
+            _currentData.OnHighlightStateChanged -= HighlightCell;
+        }
     }
 }

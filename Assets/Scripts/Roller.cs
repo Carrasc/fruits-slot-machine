@@ -54,7 +54,7 @@ public class Roller : MonoBehaviour, IEnhancedScrollerDelegate
 
     public IEnumerator SpinRoller(int stopIndex, float spinTime)
     {
-        // Fast spin for 2-4 seconds
+        // Fast spin for X seconds
         float elapsed = 0f;
         while (elapsed < spinTime)
         {

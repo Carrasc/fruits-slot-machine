@@ -2,6 +2,8 @@
 
 A simple Unity project that simulates a classic 5-reel slot machine. Reels spin with realistic timing, loop seamlessly, and stop on pre-determined winning results for fair gameplay. Includes highlighting of winning symbols and configurable paylines.
 
+WebGL test here -> https://carrasc.github.io/slot-machine-simulator-webgl/
+
 ## 🛠️ Features
 - 5 reels with custom symbol patterns
 - Seamless looping reels with EnhancedScroller
@@ -27,4 +29,4 @@ A simple Unity project that simulates a classic 5-reel slot machine. Reels spin 
 - Once all reels stop, winning symbols (if any) are highlighted automatically.
 
 ## 🧩 Dependencies
-- [EnhancedScrollerV2](https://assetstore.unity.com/packages/tools/gui/enhanced-scroller-v2-72736) for performant looping reels
+- [EnhancedScrollerV2] for performant looping reels
